@@ -1,0 +1,212 @@
+ 
+
+
+
+     <div class="page-wrapper">
+      <div class="main-content">
+          <div class="section__content section__content--p30">
+              <div class="container-fluid">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="overview-wrap">
+                              <h2 class="title-1">coupen Details</h2>
+                              <button class="au-btn au-btn-icon au-btn--blue"></button>
+                              <button class="btn btn-dark "  data-toggle="modal" data-target="#exampleModal">Add coupen</button>
+                          </div>
+                      </div>
+                  </div>
+                <!-------error-->
+                <%if(alreadyexistError){%>
+                  <p id="error" style="color: red;font-size: larger;"><%=alreadyexistError%></p>
+                 <%}%>
+                 <script>
+                   const error=document.getElementById("error")
+                   setTimeout(()=>{
+                 error.style.display='none';
+                 },3000);
+                 
+                 </script>
+                <!-------error-->
+                  <!-- <div class="row m-t-25"> -->
+                    <div class="row" >
+                      <div class="col-lg-12 m-t-25">
+                          <div class="table-responsive table--no-card m-b-40">
+                              <table class="table table-borderless table-striped table-earning"  id="productsTable">
+                                <thead class="thead-dark">
+                                  <tr>
+                                      <th scope="col">index</th>
+                                      <th scope="col">Coupen Code</th>
+                                      <th scope="col">Discount</th>
+                                      <th scope="col">created Date</th>
+                                      <th scope="col">Expiry Date</th>
+                                      <th scope="col">Option</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                 <% for(let i=0;i< coupendetails.length;i++){%>
+                                      <tr> 
+                                          <th scope="row"><%=i+1%></th>
+                                          <td><%=coupendetails[i].name%></td>
+                                          <td><%=coupendetails[i].discount%>%</td>
+                                          <td><%=coupendetails[i].createdDate%></td>
+                                          <td><%=coupendetails[i].expiryDate%></td>
+                                          <td><button class="btn btn-danger "data-toggle="modal" data-target="#modalConfirmDelete<%=coupendetails[i]._id%>" >DELETE</button></td>
+                                      </tr>  
+                                      <%}%>
+                                 
+                                </tbody>
+                              </table>
+                          </div>
+                      </div>
+                
+    
+            </div>
+        </div>
+      </div>  
+    </div>
+
+
+    <!------modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add coupen</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/add-coupon" method="post" id="addcoupen">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="coupon" class="col-form-label">Name</label>
+                            <input type="text" class="form-control" id="coupon" name="coupen">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="coupon" class="col-form-label">Coupon code</label>
+                            <input type="text" class="form-control" id="coupons" name="name">
+                        </div>
+                        <div class="mb-1">
+                            <label for="recipient-name" class="col-form-label">Discount</label>
+                            <input type="number" class="form-control" id="discount" name="discount">
+                        </div>
+                        <div class="mb-1">
+                            <label for="date" class="col-form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="expiryDate" name="expiryDate">
+                        </div>
+
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+
+                </form>
+    
+            </div>
+          </div>
+       
+        </div>
+      </div>
+      <!---------end---modal-->
+
+
+
+     
+     <!-----edit-modal-->
+     <% for(let i=0;i< coupendetails.length;i++){%>
+        <div class="modal fade" id="modalConfirmDelete<%=coupendetails[i]._id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
+              <!-- Content -->
+              <div class="modal-content text-center">
+                <!-- Header -->
+                <div class="modal-header d-flex justify-content-center">
+                  <p class="heading">Are you sure?</p>
+                </div>
+          
+                <!-- Body -->
+                <div class="modal-body">
+          
+                  <i class="fas fa-times fa-4x animated rotateIn"></i>
+          
+                </div>
+          
+                <!-- Footer -->
+                <div class="modal-footer flex-center">
+                  <a href="/admin/detetecoupen/<%=coupendetails[i]._id%>" class="btn   btn-danger waves-effect">Yes</a>
+                  <a type="button" class="btn btn-outline-danger" data-dismiss="modal">No</a>
+                </div>
+              </div>
+              /.Content
+            </div>
+          </div>
+      <%}%>
+     <!-----end--edit coupen modal------->
+
+     <script>
+
+      $(function () {
+        $('#productsTable').DataTable();
+      });
+      </script>
+      <style>
+        label.error {
+              color: rgb(210, 67, 67);
+              font-size: 12px;
+            }
+      </style>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+
+      <script>
+        jQuery('#addcoupen').validate({
+          rules:{
+            coupen:{
+              required:true,
+              minlength:3,
+              normalizer: function(value) {
+            return $.trim(value);
+          }
+            },
+            name:{
+              required:true,
+              minlength:6,
+              maxlength:8,
+              normalizer: function(value) {
+            return $.trim(value);
+          }
+            },
+            discount:{
+              required:true,
+              digits:true
+            },
+            expiryDate:{
+              required:true
+            }
+          },
+          messages:{
+            coupen:{
+              required:"coupen name is required"
+            },
+            name:{
+              required:"coupen code required"
+            },
+            discount:{
+              required:"discount required",
+              digits:"only number is required"
+            },
+            expiryDate:{
+              required:"expirydate required"
+            }
+          },
+          submitHandler: function(form) {
+          form.submit();
+    }
+        })
+      </script>

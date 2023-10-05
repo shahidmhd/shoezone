@@ -1,0 +1,266 @@
+<div class="page-wrapper">
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+       
+ <!-- PAGE CONTENT-->
+         <div class="page-content--bgf7">
+            <!-- BREADCRUMB-->
+            <section class="au-breadcrumb2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="au-breadcrumb-content">
+                                <div class="au-breadcrumb-left">
+                                    <span class="au-breadcrumb-span">You are here:</span>
+                                    <ul class="list-unstyled list-inline au-breadcrumb__list">
+                                        <li class="list-inline-item active">
+                                            <a href="#">Home</a>
+                                        </li>
+                                        <li class="list-inline-item seprate">
+                                            <span>/</span>
+                                        </li>
+                                        <li class="list-inline-item">Dashboard</li>
+                                    </ul>
+                                </div>
+                                <!-- <form class="au-form-icon--sm" action="" method="post">
+                                    <input class="au-input--w300 au-input--style2" type="text" placeholder="Search for datas &amp; reports...">
+                                    <button class="au-btn--submit2" type="submit">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </button>
+                                </form> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END BREADCRUMB-->
+
+            <!-- WELCOME-->
+            <section class="welcome p-t-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="title-4">Welcome To Dashboard
+                                <span></span>
+                            </h1>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END WELCOME-->
+
+            <!-- STATISTIC-->
+            <section class="statistic statistic2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--green">
+                                <h2 class="number"><%=totalamount%></h2>
+                                <span class="desc">Today Sale</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-account-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--orange">
+                                <h2 class="number"><%=weektotalamount%></h2>
+                                <span class="desc">This Week</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--blue">
+                                <h2 class="number"><%=monthlyAmount%></h2>
+                                <span class="desc">This month</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-calendar-note"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--red">
+                                <h2 class="number"><%=totalsale%></h2>
+                                <span class="desc">Total Earnings</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-money"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC-->
+
+            <!-- STATISTIC CHART-->
+            <section class="statistic-chart">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="title-5 m-b-35">statistics</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC CHART-->
+
+            <!-- DATA TABLE-->
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <canvas id="myChart"></canvas>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Pie Chart</h3>
+                                        <canvas id="pieChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Bar chart</h3>
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="au-card m-b-30">
+                                    <div class="au-card-inner">
+                                        <h3 class="title-2 m-b-40">Yearly Sales</h3>
+                                        <canvas id="sales-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END DATA TABLE-->
+        </div>
+
+
+       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+       <script>
+
+        (async()=>{
+
+       const res=await axios({
+        method:'get',
+        url:"/admin/getdashboarddata"
+       })
+      console.log(res.data.salesPerMonth);
+      const salesPerMonth = res.data.salesPerMonth
+    let amountofSalesPerMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+    salesPerMonth.forEach(sales => {
+      amountofSalesPerMonth[ sales._id-1 ]= sales.sale
+    });
+
+     console.log(res.data.paymentStatuscount)
+
+    //  const orderStatusDetails = res.data.orderStatusDetails
+    // console.log(orderStatusDetails);
+    //  let orderStatuses=[];
+    //  let orderStatusCount=[]
+
+    //  orderStatusDetails.forEach(order=>{
+    //   orderStatuses.push(order._id)
+    //   orderStatusCount.push(order.count)
+    //  })
+
+     const payStatusDetails =res.data.paymentStatuscount
+    // console.log(orderStatusDetails);
+     let orderStatuses=[];
+     let orderStatusCount=[]
+
+     payStatusDetails.forEach(order=>{
+      orderStatuses.push(order._id)
+      orderStatusCount.push(order.count)
+     })
+
+
+
+
+try{
+
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN','JUL','AUG','SEP','OCT','NOV','DEC'],
+            datasets: [{
+              label: '# MONTH SALE',
+              data:amountofSalesPerMonth,
+              borderWidth: 2,
+              backgroundColor:"blue"
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    }catch(err){
+        console.log(err);
+    }
+
+    try {
+
+//pie chart
+var ctx = document.getElementById("pieChart");
+if (ctx) {
+  ctx.height = 200;
+  var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      datasets: [{
+        data:orderStatusCount,
+        backgroundColor: [
+          "#32a84e",
+          "#5e32a8",
+          "#a84232",
+          
+        ],
+        hoverBackgroundColor: [
+          "#32a84e",
+          "#5e32a8",
+          "#a84232",
+    
+        ]
+
+      }],
+      labels: orderStatuses,
+    },
+    options: {
+      legend: {
+        position: 'top',
+        labels: {
+          fontFamily: 'Poppins'
+        }
+
+      },
+      responsive: true
+    }
+  });
+}
+
+
+} catch (error) {
+console.log(error);
+}
+
+    })();
+      </script>
+
+       
